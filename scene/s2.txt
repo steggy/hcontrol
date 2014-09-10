@@ -1,0 +1,9 @@
+;Try this for a comment
+;we'll read lines into an array
+;loop=3 always the first item and the count
+;run=1,1 2 values first is relay and the second is off/on 
+;sleep given in sec
+loop=4
+run=1,1
+sleep=3
+run=1,0
