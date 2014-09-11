@@ -1,0 +1,47 @@
+14-09-11 11:24:23
+loop=4
+run=1,1
+sleep=3
+run=1,0
+sleep=1
+run=2,1
+sleep=2
+run=2,0
+
+Loop 4
+4
+Run Relay 1 1
+Sleep for 3
+Run Relay 1 0
+Sleep for 1
+Run Relay 2 1
+Sleep for 2
+Run Relay 2 0
+End For
+3
+Run Relay 1 1
+Sleep for 3
+Run Relay 1 0
+Sleep for 1
+Run Relay 2 1
+Sleep for 2
+Run Relay 2 0
+End For
+2
+Run Relay 1 1
+Sleep for 3
+Run Relay 1 0
+Sleep for 1
+Run Relay 2 1
+Sleep for 2
+Run Relay 2 0
+End For
+1
+Run Relay 1 1
+Sleep for 3
+Run Relay 1 0
+Sleep for 1
+Run Relay 2 1
+Sleep for 2
+Run Relay 2 0
+End For

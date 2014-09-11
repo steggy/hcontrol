@@ -25,6 +25,7 @@ global $count2;
 global $randcolorpause;
 global $fadepause;
 global $debugmode;
+global $runpid;
 
 
 $GLOBALS['cmd'] = '';
@@ -264,34 +265,52 @@ function checksock()
                 }
                 
                 break;
-            case '-fade':
-            case '-f':
-                $response = "Fading\n\n";
-                socket_write($client, $response);
+            case '-p':
+            case '-P':
+                //try to fork or background process
+                if (isset($output[1])) 
+                {
+                    /*socket_write($client, $output[1]);
+                    socket_close($client);
+                    return;*/
+                    $c = getcwd() .'/bp.php ' .$output[1] .' >bp.txt 2>&1 & echo $!';
+                    socket_write($client, $c);
+                    $GLOBALS['runpid'] = system($c);
+                    $status = system('ps aux | grep -i ' . $pid);
+                    //echo $status;
+                    socket_write($client, $pid);
+                }else{
+                    socket_write($client, "Scene Required");
+                }
                 socket_close($client);
-                randomlight();
+                break;
+            case '-pk':
+                 if (isset($output[1])) {
+                    $status = system('sudo kill ' .$output[1]);
+                    socket_write($client, $status);
+                    socket_close($client);
+                }
+                break;
+            case '-ps':
+                if (isset($GLOBALS['runpid'])) 
+                {
+                    $status = system('ps aux | grep -i ' . $GLOBALS['runpid'] .' | grep -v grep');
+                    socket_write($client, "PID STATUS " .$GLOBALS['runpid'] . " " .$status ." end");
+                }else{
+                    socket_write($client, "PID NOT SET");
+                }
+                socket_close($client);
+                break;           
+            case '-reset':
+                //we should try a reset process to get all the relays back to of
                 break;    
-            case '-strobe':
-                $response = "Strobing\n\n";
-                socket_write($client, $response);
-                socket_close($client);
-                strobeII();
-                break;        
+            
             case 'kill':
                 $response = "Killing\n\n";
                 socket_write($client, $response);
                 socket_close($client);
                 socket_close($GLOBALS['sock']);
                 exit;
-                break;    
-            case 'stoptest':
-                $GLOBALS['stop'] = true;
-                break;    
-            case '-stop':
-                $response = "Stopping\n";
-                socket_write($client, $response);
-                socket_close($client);
-                $GLOBALS['stop'] = true;
                 break;    
             case "--help":
             case "-help":
@@ -366,9 +385,23 @@ $runarray = explode("\n", file_get_contents(getcwd() ."/scene/" .$farray[$num -1
             $loop[1]--;
         }
     }else{
-
+            for ($i=0; $i < sizeof($cmdarray); $i++) 
+            { 
+                $cmd = split('=', $cmdarray[$i]);
+                switch(strtolower($cmd[0])){
+                    case 'run':
+                        $rr = split(",", $cmd[1]);
+                        echo "Run Relay " .$rr[0] ." " .$rr[1] ."\n";
+                        break;
+                    case 'sleep':
+                        echo "Sleep for " .$cmd[1] ."\n";
+                        sleep($cmd[1]);
+                        break;    
+                }
+            }
+            echo "End For\n";
     }
-    return "Scene " .$num ."Complete";
+    return "Scene " .$num ." Complete";
 }
 //'*******************************************************************************
 
