@@ -28,12 +28,12 @@ function runscene($num)
 $dir = dir(getcwd() ."/scene");
 $farray = array();
 $cmdarray = array();
-echo date('y-m-d H:i:s'); 
+echo "Scene " .$num ." Start " .date('y-m-d H:i:s'); 
 echo "\n";
 //List files in directory
 while (($file = $dir->read()) !== false){
     //Make sure it's a .txt file
-    if(strlen($file) < 5 || substr($file, -4) != '.txt')
+    if(strlen($file) < 5 || substr($file, -4) != '.scn')
         continue;    
     $farray[] = $file; 
     //$ll .= $c .") filename: " . $file ."*";
@@ -90,6 +90,7 @@ $runarray = explode("\n", file_get_contents(getcwd() ."/scene/" .$farray[$num -1
             }
             echo "End For\n";
     }
+    echo "\nScene End\n";
     return "Scene " .$num ." Complete";
 }
 //'*******************************************************************************

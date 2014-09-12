@@ -1,0 +1,28 @@
+;Comment
+;	Scene file to be run by hcontrol.php a Halloween control script for Raspberry 	pi
+;	We'll read lines into an array
+;
+;	Format of file
+;
+;The commands that can be in the file
+;	loop 	> The number of times to repeat this command set. Must always be the first command or will be ignored
+;	run	> The relay to turn on/off
+;	sleep	> Like it says - catch some zzzzz's
+;	snd	> The sound file to be played
+;
+;loop=[count]
+;
+;run=[1-6,0-1]	2 values seperated by a comma -  first is relay number - second is off/on - 0/1 
+;
+;sleep=[1-20]	given in sec
+;
+;loop=[1-6]	whole numbers
+;
+;snd=[file]	The sound file to be played	
+
+;example
+
+run=1,1
+snd=wolf.mpg
+sleep=3
+run=1,0

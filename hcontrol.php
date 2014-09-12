@@ -247,7 +247,12 @@ function checksock()
                     socket_write($client, listscene());
                     socket_close($client);
                     
-                    break;    
+                    break; 
+            case "-snd":
+                    socket_write($client, listsound());
+                    socket_close($client);
+                    break;         
+                       
             case "-sl":
                 
                 if (isset($output[1])) {
@@ -274,13 +279,13 @@ function checksock()
                     socket_close($client);
                     return;*/
                     $c = getcwd() .'/bp.php ' .$output[1] .' >bp.txt 2>&1 & echo $!';
-                    socket_write($client, $c);
+                    //socket_write($client, $c);
                     $GLOBALS['runpid'] = system($c);
-                    $status = system('ps aux | grep -i ' . $pid);
+                    $status = system('ps aux | grep -i ' . $GLOBALS['runpid']);
                     //echo $status;
-                    socket_write($client, $pid);
+                    socket_write($client, $GLOBALS['runpid']);
                 }else{
-                    socket_write($client, "Scene Required");
+                    socket_write($client, "Scene Number Required");
                 }
                 socket_close($client);
                 break;
@@ -345,7 +350,7 @@ $cmdarray = array();
 //List files in directory
 while (($file = $dir->read()) !== false){
     //Make sure it's a .txt file
-    if(strlen($file) < 5 || substr($file, -4) != '.txt')
+    if(strlen($file) < 5 || substr($file, -4) != '.scn')
         continue;    
     $farray[] = $file; 
     //$ll .= $c .") filename: " . $file ."*";
@@ -414,7 +419,7 @@ $farray = array();
 //List files in directory
 while (($file = $dir->read()) !== false){
     //Make sure it's a .txt file
-    if(strlen($file) < 5 || substr($file, -4) != '.txt')
+    if(strlen($file) < 5 || substr($file, -4) != '.scn')
         continue;    
     $farray[] = $file; 
     //$ll .= $c .") filename: " . $file ."*";
@@ -429,16 +434,38 @@ return $file_contents;
 //'*******************************************************************************
 function listscene(){
 //Open directory
+//Note: when returning multiple lines, seperate with a '*'     
 $dir = dir(getcwd() ."/scene");
 $c=0;
 $ll='Use -sl x to list the scene x is the file number*';
 //List files in directory
 while (($file = $dir->read()) !== false){
     //Make sure it's a .txt file
-    if(strlen($file) < 5 || substr($file, -4) != '.txt')
+    if(strlen($file) < 5 || substr($file, -4) != '.scn')
         continue;
     $c++;    
-    $ll .= $c .") filename: " . $file ."*";
+    $ll .= $c .") " . $file ."*";
+}
+
+$dir->close();
+return $ll;
+}
+//'*******************************************************************************
+
+//'*******************************************************************************
+function listsound(){
+//Open directory
+//Note: when returning multiple lines, seperate with a '*'     
+$dir = dir(getcwd() ."/sound");
+$c=0;
+$ll=''; //Use -sl x to list the scene x is the file number*';
+//List files in directory
+while (($file = $dir->read()) !== false){
+    //Make sure it's a .txt file
+    if(strlen($file) < 5 || substr($file, -4) != '.mp3')
+        continue;
+    $c++;    
+    $ll .= $c .") " . $file ."*";
 }
 
 $dir->close();
@@ -539,7 +566,7 @@ function updown($o,$n)
 //'*******************************************************************************
 function readcmdini()
 {
-    echo $GLOBALS['cmdinifile'];
+    //echo $GLOBALS['cmdinifile'];
 if (!file_exists($GLOBALS['cmdinifile'])) {
     echo "*********************************************\nrgbled.php\nFile not found: " .$file ."\n\n";
     die;
@@ -551,7 +578,7 @@ $GLOBALS['cmdini_array'] = parse_ini_file($GLOBALS['cmdinifile'],true);
 //'*******************************************************************************
 function readini($file)
 {
-    echo $file;
+    //echo $file;
 if (!file_exists($file)) {
     echo "*********************************************\nrgbled.php\nFile not found: " .$file ."\n\n";
     die;
@@ -635,20 +662,11 @@ function shwhelp()
     $hstring .= "This help shown from server\n";
     $hstring .= "Mandatory arguments\n";
     $hstring .= "  -h, \t This help\n";
-    $hstring .= "  -s, \t Scene Config\n";
-    $hstring .= "  -c || color ,[.001-10],[.001-10],[.001-10],\t Set and turn on LED - Color values seperated by comma.\n";
-    $hstring .= "  -setcolor,[.001-10],[.001-10],[.001-10] \t Sets the color\n";
-    $hstring .= "  -stop, \t Stop the Strobe or the fade\n";
-    $hstring .= "  -strobe [.001-10] [.001-10] [.001-10] [x-duration] [y-count],\t Strobe LED - Color values seperated by space. \n";
-    $hstring .= "  -setstrobe\t Used for seting duration\n";
-    $hstring .= "  -y || -yard, [1-10] \t Turn on yard lights at power 1-10 \n";
-    $hstring .= "  -f || -fade\t Fade random colors\n";
-    $hstring .= "  -setfade\t Sets the fade duration\n";
-    $hstring .= "  -get [option]:\n";
-    $hstring .= "        fd: Fade duration\n";
-    $hstring .= "        sd: Strobe duration\n";
-    $hstring .= "         c: Colors\n";
-    $hstring .= "Pin numbers are set in the " .$GLOBALS['inifile'] ." file\n";      
+    $hstring .= "  -s, \t Show Scenes\n";
+    $hstring .= "  -sl [x], \t Show Scene contents\n";
+    $hstring .= "  -p [x], \t Play/Run SceneShow Scenes\n";
+    $hstring .= "  -snd, \t List sound files\n";
+    $hstring .= "Pin numbers for relays are set in the " .$GLOBALS['inifile'] ." file\n";      
     $hstring .= "\n\n";
     return $hstring;
 }
