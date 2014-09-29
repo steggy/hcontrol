@@ -74,7 +74,11 @@ function setsock()
 set_time_limit (0);
 // Set the ip and port we will listen on
 $GLOBALS['address'] = '0.0.0.0';
-$GLOBALS['port'] = 9000;
+$GLOBALS['port'] = 9900;
+if ($GLOBALS['debug']) 
+{
+    echo "Port " .$GLOBALS['port'] ."\n";     
+}
 // Create a TCP Stream socket
 $GLOBALS['sock'] = socket_create(AF_INET, SOCK_STREAM, 0);
 socket_set_option($GLOBALS['sock'], SOL_SOCKET, SO_SNDBUF, 25000);

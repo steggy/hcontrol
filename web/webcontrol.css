@@ -1,0 +1,48 @@
+
+body
+{
+/*background-color:#F7DCB4;*/
+background-color:black;
+}
+select 
+{
+background-color:black;	
+color:yellow;
+}
+input[type=text] 
+{
+background-color:black;	
+color:yellow;
+}
+
+#divss
+{
+width:300px;
+/*background-color:#9C9F84;*/
+background-color:#003B2B;
+border: 1px solid #5C755E;
+padding: 1em;
+border-radius: 10px;
+box-shadow: 5px 5px 3px #856270;
+display:inline-block;
+color:orange;
+margin: 10px;
+}
+.divdiv
+{
+	background-color:yellow;
+	width:200px;
+}
+#button1
+{
+width:100px;
+height:35px;
+background-color:#494949;
+}
+#button4
+{
+width:72px;
+height:35px;
+background-color:black;
+color:pink;
+} 

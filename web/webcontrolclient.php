@@ -1,9 +1,16 @@
-#! /usr/bin/php
 
-<?
+
+<?php
+
+if (isset($_POST['sl'])) 
+{
+	$cstring = "-s";
+}else{
+	$cstring = "-h";
+}
 
 //lets look for arg
-if(sizeof($argv) < 2)
+/*if(sizeof($argv) < 2)
 {
 	sendcmd('-h');
 	die;
@@ -16,7 +23,7 @@ if(sizeof($argv) < 2)
 		}else{
 			$cstring .= " " .$argv[$i];
 		}
-	} 
+	}*/ 
      sendcmd($cstring);
 
 /*switch ($argv[1]) {
@@ -66,12 +73,13 @@ function sendcmd($cmd)
 	// trim the result and remove the starting ?
 	//$result = trim($result);
 	//$result = substr($result, 2);
-	 $r = explode("*", $result);
-	 for($i =0;$i < sizeof($r); $i++)
-	 {
-		echo $r[$i] ."\n";	 	
-	 }
+	 //$r = explode("*", $result);
+	 //for($i =0;$i < sizeof($r); $i++)
+	// {
+	//	echo $r[$i] ."\n";	 	
+	// }
 
+	 echo $result ."\n";
 	// now print it to the browser
 	/*}
 	?>
