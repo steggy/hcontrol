@@ -2,45 +2,25 @@
 
 <?php
 
-if (isset($_POST['sl'])) 
+if (isset($_POST['first'])) 
 {
-	$cstring = "-s";
+	switch (strtolower($_POST['first'])) {
+		case "-s":
+			$cstring = "-s";
+			break;
+		case "-sl":
+			$cstring = "-sl " .$_POST['scene'];
+			break;
+		default:
+			$cstring = "-h";
+			break;
+	}
+	
 }else{
-	$cstring = "-h";
+	$cstring = "-h";	
 }
 
-//lets look for arg
-/*if(sizeof($argv) < 2)
-{
-	sendcmd('-h');
-	die;
-}
-	for($i=1;$i < sizeof($argv); $i++)
-	{
-		if ($i == 1) 
-		{
-			$cstring=$argv[$i];
-		}else{
-			$cstring .= " " .$argv[$i];
-		}
-	}*/ 
-     sendcmd($cstring);
-
-/*switch ($argv[1]) {
-    case 'test':
-        sendcmd('test');
-        break;
-    case '-D':
-        setsock();
-        $GLOBALS['debug'] = false;
-        main();
-        break;
-    default:
-        //showusage();
-    	echo "thanks for playing\n\n";
-    	return;
-        break;
-}*/
+sendcmd($cstring);
 
 
 function sendcmd($cmd)
